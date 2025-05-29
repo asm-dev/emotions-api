@@ -6,6 +6,7 @@ import emotionRoutes from "./routing/emotion-routes.js";
 
 const app = express();
 app.use(express.json());
+app.use(loggerMiddleware);
 
 app.use("/login", authRoutes);
 
