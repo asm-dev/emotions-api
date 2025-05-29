@@ -1,15 +1,18 @@
 import express from "express";
+import {
+  createEmotion,
+  deleteEmotion,
+  getAllEmotions,
+  getEmotionById,
+  updateEmotion,
+} from "../controllers/emotion-controller.js";
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.json({ message: "Funciona el router" });
-});
-
-router.get("/fail", (req, res) => {
-  throw new Error(
-    "Forzamos un error para probar el middleware de manejo de errores"
-  );
-});
+router.get("/", getAllEmotions);
+router.get("/:id", getEmotionById);
+router.post("/", createEmotion);
+router.put("/:id", updateEmotion);
+router.delete("/:id", deleteEmotion);
 
 export default router;
