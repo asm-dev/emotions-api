@@ -1,5 +1,9 @@
 # API Diario de emociones
 
+<p align="center">
+  <img src="./assets/emotion_api_logo.png" width="200" alt="Emotion API Logo" />
+</p>
+
 Esta API REST permite registrar, consultar, actualizar y eliminar emociones asociadas a usuarios autenticados. Su propósito es ofrecer una estructura backend funcional para gestionar experiencias emocionales, útil como base para diarios personales, sistemas de bienestar o aplicaciones de salud mental.
 
 Implementar esta API me ha permitido profundizar en varios conceptos clave del desarrollo backend con Node.js y Express. Por ejemplo, la arquitectura modular, que permite dividir claramente el código en capas (controladores, servicios, middlewares...) favoreciendo la mantenibilidad y la escalabilidad.
