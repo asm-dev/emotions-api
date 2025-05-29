@@ -1,6 +1,7 @@
 import fs from "fs/promises";
 import path from "path";
 import { generateToken } from "../services/token-service.js";
+import { sendInvalidCredentialsError } from "../utils/send-error.js";
 
 const usersPath = path.resolve("data/users.json");
 
@@ -15,7 +16,7 @@ export async function login(req, res) {
   );
 
   if (!user) {
-    return res.status(401).json({ error: "Credenciales inválidas" });
+    sendInvalidCredentialsError(res);
   }
 
   const token = generateToken(user);

@@ -1,51 +1,65 @@
-import { v4 as uuidv4 } from "uuid";
 import { readData, writeData } from "../services/file-service.js";
+import { createNewEmotion } from "../utils/create-new-emotion.js";
 import { sendEmotionNotFoundError } from "../utils/send-error.js";
 
-export const getAllEmotions = async (req, res) => {
-  const emotions = await readData();
-  res.json(emotions);
+function findEmotionIndex(emotionData, id, res) {
+  const index = emotionData.findIndex((e) => e.id === id);
+  if (index === -1) {
+    sendEmotionNotFoundError(res);
+    return null;
+  }
+  return index;
+}
+
+function findEmotion(emotionData, id, res) {
+  const emotion = emotionData.find((e) => e.id === id);
+  if (!emotion) {
+    sendEmotionNotFoundError(res);
+    return null;
+  }
+  return emotion;
+}
+
+export const getAllemotionData = async (req, res) => {
+  const emotionData = await readData();
+  res.json(emotionData);
 };
 
 export const getEmotionById = async (req, res) => {
-  const emotions = await readData();
-  const emotion = emotions.find((e) => e.id === req.params.id);
-  if (!emotion) return sendEmotionNotFoundError(res);
+  const emotionData = await readData();
+  const emotion = findEmotion(emotionData, req.params.id, res);
+  if (!emotion) return;
   res.json(emotion);
 };
 
 export const createEmotion = async (req, res) => {
-  const { title, date, emotion, intensity, description, context } = req.body;
-  const newEmotion = {
-    id: uuidv4(),
-    title,
-    date,
-    emotion,
-    intensity,
-    description,
-    context,
-    userId: req.user?.id || "anon", //TODO: Implementar autenticación
-  };
-  const emotions = await readData();
-  emotions.push(newEmotion);
-  await writeData(emotions);
+  const newEmotion = createNewEmotion({
+    ...req.body,
+    userId: req.user.id,
+  });
+
+  const emotionData = await readData();
+  emotionData.push(newEmotion);
+  await writeData(emotionData);
   res.status(201).json(newEmotion);
 };
 
 export const updateEmotion = async (req, res) => {
-  const emotions = await readData();
-  const index = emotions.findIndex((e) => e.id === req.params.id);
-  if (index === -1) return sendEmotionNotFoundError(res);
-  emotions[index] = { ...emotions[index], ...req.body };
-  await writeData(emotions);
-  res.json(emotions[index]);
+  const emotionData = await readData();
+  const index = findEmotionIndex(emotionData, req.params.id, res);
+  if (index === null) return;
+
+  emotionData[index] = { ...emotionData[index], ...req.body };
+  await writeData(emotionData);
+  res.json(emotionData[index]);
 };
 
 export const deleteEmotion = async (req, res) => {
-  const emotions = await readData();
-  const index = emotions.findIndex((e) => e.id === req.params.id);
-  if (index === -1) return sendEmotionNotFoundError(res);
-  const deleted = emotions.splice(index, 1);
-  await writeData(emotions);
+  const emotionData = await readData();
+  const index = findEmotionIndex(emotionData, req.params.id, res);
+  if (index === null) return;
+
+  const deleted = emotionData.splice(index, 1);
+  await writeData(emotionData);
   res.json(deleted[0]);
 };
