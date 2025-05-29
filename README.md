@@ -28,9 +28,9 @@ En cuanto a la seguridad, se ha aplicado autenticación mediante JWT, protecció
 3. Configura las variables de entorno renombrando el archivo `.env.example` a `.env`. En él encontrarás instrucciones comentadas para completarlo correctamente, incluyendo el comando para generar la clave secreta del token JWT.
 4. Ejecuta el servidor con `node server.js`
 
-## Cómo probar la API
+## Cómo probarla
 
-Primero tienes que **obtener un token válido** mediante una solicitud `POST /login` con un usuario incluido en el archivo `data/users.json`, por ejemplo:
+Primero tienes que **obtener un token válido** mediante una solicitud `POST /login` (que puedes realizar en Postman, Insonmia, Bruno, RapidAPI, etc) con un usuario incluido en el archivo `data/users.json`, por ejemplo:
 
 ```json
 {
